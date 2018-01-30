@@ -142,19 +142,6 @@ def handle_calculate_IK(req):
 	    joint_trajectory_point.positions = [theta1, theta2, theta3, theta4, theta5, theta6]
 	    joint_trajectory_list.append(joint_trajectory_point)
 
-	    FK = T0_EE.evalf(subs = {q1: theta1,q2: theta2,q3: theta3,q4: theta4,q5: theta5,q6: theta6 }
-	    your_ee = [FK[0,3],FK[1,3],FK[2,3]] # <--- Load your calculated end effector value from your forward kinematics
-
-
-	    if not(sum(your_ee)==3):
-		ee_x_e = abs(your_ee[0]-test_case[0][0][0])
-		ee_y_e = abs(your_ee[1]-test_case[0][0][1])
-		ee_z_e = abs(your_ee[2]-test_case[0][0][2])
-		ee_offset = sqrt(ee_x_e**2 + ee_y_e**2 + ee_z_e**2)
-		print ("\nEnd effector error for x position is: %04.8f" % ee_x_e)
-		print ("End effector error for y position is: %04.8f" % ee_y_e)
-		print ("End effector error for z position is: %04.8f" % ee_z_e)
-		print ("Overall end effector offset is: %04.8f units \n" % ee_offset)
 
         rospy.loginfo("length of Joint Trajectory List: %s" % len(joint_trajectory_list))
         return CalculateIKResponse(joint_trajectory_list)
