@@ -52,7 +52,6 @@ You're reading it!
 
 * From the image above, I obtained  a DH paremeter table according to the definitions.
 
-![alt text][FK-image]
 
 Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 --- | --- | --- | --- | ---
@@ -130,7 +129,8 @@ theta1 = atan2(WC[1], WC[0])
 ```
 * The next step is to calculate theta2.
 ![alt text][theta2]
--- We can see that theta2=90-a-alpha. To calculate 'alpha' we apply Pithagorean and for 'a' we need Cosines Law. 
+
+* We can see that theta2=90-a-alpha. To calculate 'alpha' we apply Pithagorean and for 'a' we need Cosines Law. 
 ![alt text][triangle]
 
 ```python
@@ -154,12 +154,11 @@ Law in the triangle above. To calculate gamma, you can calculate acos(d4,H) = 0.
 theta3 = pi / 2 - (angle_b + 0.03598446)
 ```
 * Finally, we need to calculate the rest of the angles by obtaining R3_6 and extracting euler angles. This code is similar to the lesson 11-8.
-
+```python
 R0_3 = R0_1 * R1_2 * R2_3    
 R0_3 = R0_3.evalf(subs={q1: theta1, q2:theta2 , q3: theta3})
 R3_6 = R0_3.inv("LU") * ROT_EE
 
-```python
 theta4 = atan2(R3_6[2,2], -R3_6[0,2])
 theta5 = atan2(sqrt(R3_6[0,2]**2 + R3_6[2,2]**2), R3_6[1,2])
 theta6 = atan2(-R3_6[1,1], R3_6[1,0])
