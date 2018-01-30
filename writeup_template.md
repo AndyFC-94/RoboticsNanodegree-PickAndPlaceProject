@@ -18,11 +18,11 @@
 [//]: # (Image References)
 
 [image1]: ./misc_images/misc1.png
-[image2]: ./misc_images/misc3.png
-[image3]: ./misc_images/misc2.png
+[image2]: ./misc_images/misc2.png
+[image3]: ./misc_images/misc3.png
 [FK-image]: ./misc_images/FK_image.jpg
 [tf-matrix]: ./misc_images/TF_Matrix.png
-[wrist-center]: ./misc_images/wrist-center.png
+[wrist-center]: ./misc_images/wrist_center.png
 [DH-definitions]: ./misc_images/DH-paremeters-definitions.png
 [theta1]: ./misc_images/theta1_image.jpeg
 [theta2]: ./misc_images/theta2_image.jpeg
@@ -42,28 +42,29 @@ You're reading it!
 ### Kinematic Analysis and Project Implementation
 #### 1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
 
--- First I obtained the following figure.
+* First I obtained the following diagram and I obtained the variable values from kr210.urdf.xacro .
 
 ![alt text][FK-image]
+![alt text][DH-definitions]
 
 
 #### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
-From the image above, I obtained the following a DH paremeter table according to the definitions.
+* From the image above, I obtained  a DH paremeter table according to the definitions.
 
 ![alt text][FK-image]
-![alt text][DH-definitions]
+
 Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 --- | --- | --- | --- | ---
 0->1 | 0 | 0 | 0.75 | q1
-1->2 | - pi/2 | 0.35 | 0 | -pi/2 + q2
+1->2 | -pi/2 | 0.35 | 0 | -pi/2 + q2
 2->3 | 0 | 1.25 | 1.25 | q3
-3->4 |  - pi/2 | -0.054 | 1.5 | q4
-4->5 |  pi/2 | 0 | 0 | q5
-5->6 | - pi/2 | 0 | 0 | q6
+3->4 | -pi/2 | -0.054 | 1.5 | q4
+4->5 | pi/2 | 0 | 0 | q5
+5->6 | -pi/2 | 0 | 0 | q6
 6->EE | 0 | 0 | 0.35 | 0
 
-To obtain Transformation Matrix, I defined TF_Matrix function:
+* To obtain Transformation Matrix, I defined TF_Matrix function:
 
 ![alt text][tf-matrix]
 
@@ -95,9 +96,9 @@ Then I defined individual transform matrix :
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
--- I obtained the wrist center according to the given formula in lectures.  
+* I obtained the wrist center according to the given formula in lectures.  
 ![alt text][wrist-center]
--- First, we need to calculate the rotation matrix from the base to the EE with the given roll, pitch and yaw values. However, this rotation matrix needs to be rotated around z and y axis.
+* First, we need to calculate the rotation matrix from the base to the EE with the given roll, pitch and yaw values. However, this rotation matrix needs to be rotated around z and y axis.
 ```python
 	    r, p, y = symbols('r p y')	
 	    ROT_x = Matrix([[ 1,              0,        0],
@@ -122,12 +123,12 @@ Then I defined individual transform matrix :
                           [pz]])
             WC = EE - (0.303) * ROT_EE[:,2]
 ```
--- Then, I obtained theta1 with geometric analysis. We can see a triangle formed by a2 , H and D. We calculate D with  wrist center coordinates and d1. 
+* Then, I obtained theta1 with geometric analysis. We can see a triangle formed by a2 , H and D. We calculate D with  wrist center coordinates and d1. 
 ![alt text][theta1]
 ```python
 theta1 = atan2(WC[1], WC[0])
 ```
--- The next step is to calculate theta2.
+* The next step is to calculate theta2.
 ![alt text][theta2]
 -- We can see that theta2=90-a-alpha. To calculate 'alpha' we apply Pithagorean and for 'a' we need Cosines Law. 
 ![alt text][triangle]
@@ -146,13 +147,13 @@ angle_c = acos((l_a * l_a + l_b * l_b - l_c * l_c)/( 2 * l_a*l_b))
 theta2 = pi / 2 - angle_a - atan2(WC[2]-0.75, sqrt(WC[0]**2+WC[1]**2)-0.35)
 
 ```
--- Now, we need to calculate theta3 and I think this is the most challenging part. theta3 = 90-(c+gamma), 'c' is calculated by the Cosine
+* Now, we need to calculate theta3 and I think this is the most challenging part. theta3 = 90-(c+gamma), 'c' is calculated by the Cosine
 Law in the triangle above. To calculate gamma, you can calculate acos(d4,H) = 0.03598446. You also can see the formula to calculate H and use this value in the Cosine Law.
 ![alt text][theta3]
 ```python
 theta3 = pi / 2 - (angle_b + 0.03598446)
 ```
---Finally, we need to calculate the rest of the angles by obtaining R3_6 and extracting euler angles. This code is similar to the lesson 11-8.
+* Finally, we need to calculate the rest of the angles by obtaining R3_6 and extracting euler angles. This code is similar to the lesson 11-8.
 
 R0_3 = R0_1 * R1_2 * R2_3    
 R0_3 = R0_3.evalf(subs={q1: theta1, q2:theta2 , q3: theta3})
@@ -165,9 +166,9 @@ theta6 = atan2(-R3_6[1,1], R3_6[1,0])
 ```
 ### Results
 #### 1. Discuss the code you implemented and your results. 
--- The robot arm is able to complete 8/10 pick and place cycles
--- A good idea is to perform forward kinematics out of the main loop.
--- I think that the arm moves very slow, because of the graphics requierements to run this simulation. So this must be improved. 
+* The robot arm is able to complete 8/10 pick and place cycles
+* A good idea is to perform forward kinematics out of the main loop.
+* I think that the arm moves very slow, because of the graphics requierements to run this simulation. So this must be improved. 
 
 ![alt text][image2]
 
