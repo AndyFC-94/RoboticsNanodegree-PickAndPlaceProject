@@ -3,9 +3,9 @@
 
 ---
 ### Useful links
-[Youtube Video - Rover Autonomous Mode](https://www.youtube.com/watch?v=7BWwNKVsJX4)
+[Pick and Place Youtube Video](https://www.youtube.com/watch?v=7BWwNKVsJX4)
 
-[Output Test](IK_server.py)
+[Final Code](IK_server.py)
 
 **Steps to complete the project:**  
 
