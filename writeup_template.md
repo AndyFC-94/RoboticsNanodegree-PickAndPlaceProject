@@ -32,7 +32,7 @@
 [second-result]: ./misc_images/second-result.png
 [theta1]: ./misc_images/theta1_image.jpeg
 [theta2]: ./misc_images/theta2_image.jpeg
-[theta3]: ./misc_images/theta3_image.jpeg
+[theta3]: ./misc_images/theta3-d.png
 [triangle]: ./misc_images/triangle_formula.jpeg
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
