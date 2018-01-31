@@ -2,7 +2,10 @@
 ### Writeup Template: You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
 
 ---
+### Useful links
+[Youtube Video - Rover Autonomous Mode](https://www.youtube.com/watch?v=7BWwNKVsJX4)
 
+[Output Test](IK_server.py)
 
 **Steps to complete the project:**  
 
