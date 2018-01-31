@@ -30,6 +30,7 @@
 [DH-algorithm]: ./misc_images/DH-algorithm.png
 [final-result]: ./misc_images/final-result.png
 [second-result]: ./misc_images/second-result.png
+[individual-matrices]: ./misc_images/individual-matrices.png
 [theta1]: ./misc_images/theta1_image.jpeg
 [theta2]: ./misc_images/theta2_image.jpeg
 [theta3]: ./misc_images/theta3-d.png
@@ -79,11 +80,11 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 --- | --- | --- | --- | ---
 0->1 | 0 | 0 | 0.75 | q1
 1->2 | -pi/2 | 0.35 | 0 | -pi/2 + q2
-2->3 | 0 | 1.25 | 1.25 | q3
+2->3 | 0 | 1.25 | 0 | q3
 3->4 | -pi/2 | -0.054 | 1.5 | q4
 4->5 | pi/2 | 0 | 0 | q5
 5->6 | -pi/2 | 0 | 0 | q6
-6->EE | 0 | 0 | 0.35 | 0
+6->EE | 0 | 0 | 0.303 | 0
 
 
 #### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
@@ -102,7 +103,7 @@ def TF_Matrix(alpha, a, d, q):
 		     [                     0,                  0,             0,             1]])
 	return TF
 ```
-Then I defined individual transform matrix :
+* Then I defined individual transform matrix :
 
 ```python
 	T0_1 =  TF_Matrix(alpha0, a0, d1, q1).subs(DH_Table)
@@ -117,7 +118,9 @@ Then I defined individual transform matrix :
 	R1_2 = T1_2[0:3,0:3]
 	R2_3 = T2_3[0:3,0:3]
 ```
+* Finally, I have the following matrices :
 
+![alt text][individual-matrices]
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
