@@ -116,11 +116,10 @@ def handle_calculate_IK(req):
 	    #
 	  
 	    theta1 = atan2(WC[1], WC[0])
-	    # Triangle sides to apply cosines law
 	    l_a = 1.500971685
 	    l_b = sqrt(pow((sqrt(WC[0]**2+WC[1]**2)-0.35),2)+pow((WC[2]-0.75),2))
 	    l_c = 1.25
-	    # Cosines Law
+
 	    angle_a = acos((l_b * l_b + l_c * l_c - l_a * l_a)/( 2 * l_b*l_c))
 	    angle_b = acos((l_a * l_a + l_c * l_c - l_b * l_b)/( 2 * l_a*l_c))
 	    angle_c = acos((l_a * l_a + l_b * l_b - l_c * l_c)/( 2 * l_a*l_b))
@@ -132,10 +131,15 @@ def handle_calculate_IK(req):
 	    R0_3 = R0_3.evalf(subs={q1: theta1, q2:theta2 , q3: theta3})
 	    R3_6 = R0_3.inv("LU") * ROT_EE
 
-	    # The rest of the angles is calculated by extracting euler angles
-	    theta4 = atan2(R3_6[2,2], -R3_6[0,2])
 	    theta5 = atan2(sqrt(R3_6[0,2]**2 + R3_6[2,2]**2), R3_6[1,2])
-	    theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+	    
+	    if sin(theta5) < 0:
+	       q4 = atan2(-r33, r13)
+	       theta4 = atan2(-R3_6[2,2], R3_6[0,2])
+	       theta6 = atan2(R3_6[1,1], -R3_6[1,0])
+	    else:
+	       theta4 = atan2(R3_6[2,2], -R3_6[0,2])
+	       theta6 = atan2(-R3_6[1,1], R3_6[1,0])
 
             # Populate response for the IK request
             # In the next line replace theta1,theta2...,theta6 by your joint angle variables

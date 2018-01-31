@@ -131,10 +131,15 @@ def handle_calculate_IK(req):
 	    R0_3 = R0_3.evalf(subs={q1: theta1, q2:theta2 , q3: theta3})
 	    R3_6 = R0_3.inv("LU") * ROT_EE
 
-
-	    theta4 = atan2(R3_6[2,2], -R3_6[0,2])
 	    theta5 = atan2(sqrt(R3_6[0,2]**2 + R3_6[2,2]**2), R3_6[1,2])
-	    theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+	    
+	    if sin(theta5) < 0:
+	       q4 = atan2(-r33, r13)
+	       theta4 = atan2(-R3_6[2,2], R3_6[0,2])
+	       theta6 = atan2(R3_6[1,1], -R3_6[1,0])
+	    else:
+	       theta4 = atan2(R3_6[2,2], -R3_6[0,2])
+	       theta6 = atan2(-R3_6[1,1], R3_6[1,0])
 
             # Populate response for the IK request
             # In the next line replace theta1,theta2...,theta6 by your joint angle variables
